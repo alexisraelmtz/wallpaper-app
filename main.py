@@ -12,16 +12,16 @@ from run import change, sleep_minutes
 def background_shift():
     advance = True
     default = Path(os.getcwd())
-    # response = (
-    #     input(f"Is {default} your desired choice to fetch Wallpaper Photos? ")
-    #     .strip()
-    #     .lower()
-    # )
+    response = (
+        input(f"Is {default} your desired choice to fetch Wallpaper Photos? ")
+        .strip()
+        .lower()
+    )
     response = "n"
 
     if response == "no" or response == "n":
-        # selection = input("Type relative path of Folder to fetch Photos:\n>").strip()
-        selection = "C:/Users/7K/Documents/Python/bg_shifter/bgs"
+        selection = input("Type relative path of Folder to fetch Photos:\n>").strip()
+        # selection = "C:/Users/7K/Documents/Python/bg_shifter/bgs"
         directory = Path(os.path.join("C:/Users/7K/", selection))
         # print(directory)
     else:
@@ -47,10 +47,12 @@ def background_shift():
         microseconds=check.microsecond,
     )
     interval = int(((time_left) / items).total_seconds() / 60)
-    print(f"Change Wallpaper every {interval} minutes for {items} times.")
 
     while advance:
         print(f"Perfect!\n{items} wallpapers Found\nProcessing...")
+        print(
+            f"Changing Wallpaper every {interval} minute(s), {items} times until {check.date()} 10:00PM."
+        )
         for i, filename in enumerate(directory.glob("*.jpg"), start=1):
             if i == 1:
                 change(filename)
