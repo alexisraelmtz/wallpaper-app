@@ -1,12 +1,12 @@
-
+import time
 import os
 import datetime
 from pathlib import Path
-from crontab import CronTab
-from run import change
+from run import change, sleep_minutes
 
 # import glob
 # import maya
+# from crontab import CronTab
 
 
 def background_shift():
@@ -38,7 +38,7 @@ def background_shift():
         advance = False
         return "Processing...\nNone Found"
 
-    max_time = datetime.timedelta(hours=22)
+    max_time = datetime.timedelta(hours=22)  # 22
     check = datetime.datetime.now()
     time_left = max_time - datetime.timedelta(
         hours=check.hour,
@@ -50,19 +50,16 @@ def background_shift():
     print(f"Change Wallpaper every {interval} minutes for {items} times.")
 
     while advance:
-        cron = CronTab(user="root")
         print(f"Perfect!\n{items} wallpapers Found\nProcessing...")
-
         for i, filename in enumerate(directory.glob("*.jpg"), start=1):
             if i == 1:
-                print(f"Done! Number {i}")
                 change(filename)
+                print(f"Done! Number {i}")
                 continue
-            job = cron.new(command='change(filename)', comment=(
-                f"Done! Number {i}"))
-            job.minute.during(1).every(0.10)
-            cron.write()
-        job.enable(False)
+            sleep_minutes(interval)
+            change(filename)
+            print(f"Done! Number {i}")
+
         advance = False
 
 
